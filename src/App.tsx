@@ -1,35 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+
+
+const authToken = "key7SBVpw5HtvATSm"; // Replace with your actual authorization token
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [photos, setPhotos] = useState<string[]>([]);
+  const [imageUrls, setImageUrls] = useState<{ [key: string]: string }>({});
+
+  // Fetch the list of photos
+  useEffect(() => {
+    fetch("https://cf-photos-worker.paragio.workers.dev/photos", {
+      headers: {
+        "Authorization": `Bearer ${authToken}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setPhotos(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching photos:", error);
+      });
+  }, []);
+
+  // Fetch images and create Blob URLs
+  useEffect(() => {
+    photos.forEach((photo) => {
+      fetch(`https://cf-photos-worker.paragio.workers.dev/photos/${photo}`, {
+        headers: {
+          "Authorization": `Bearer ${authToken}`,
+        },
+      })
+        .then((response) => response.blob())
+        .then((blob) => {
+          const imageUrl = URL.createObjectURL(blob);
+          setImageUrls((prevUrls) => ({ ...prevUrls, [photo]: imageUrl }));
+        })
+        .catch((error) => {
+          console.error("Error fetching image:", error);
+        });
+    });
+  }, [photos]);
+
+  // Clean up Blob URLs when the component is unmounted
+  useEffect(() => {
+    return () => {
+      Object.values(imageUrls).forEach((url) => {
+        URL.revokeObjectURL(url); // Clean up Blob URL
+      });
+    };
+  }, [imageUrls]);
 
   return (
-    <>
+    <div className="App">
+      <h1>Photo Gallery</h1>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {photos.length === 0 ? (
+          <p>No photos available.</p>
+        ) : (
+          photos.map((photo) => (
+            <div key={photo} className="photo-item">
+              <img
+                src={imageUrls[photo]} // Use Blob URL
+                alt={photo}
+                style={{ width: '200px', height: '200px' }}
+              />
+              <p>{photo}</p>
+            </div>
+          ))
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -40,3 +40,22 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Add this to your App.css or a separate CSS file */
+.photo-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.photo-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.photo-item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
