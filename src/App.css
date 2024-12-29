@@ -1,33 +1,42 @@
-/* App.css */
 body {
   font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
 }
 
-h1 {
-  text-align: center;
-  margin-top: 20px;
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5x5 grid layout */
-  gap: 10px;
+.top-menu {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.top-menu a {
+  color: white;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.top-menu a:hover {
+  text-decoration: underline;
+}
+
+.main-content {
+  flex: 1;
   padding: 20px;
 }
 
-.photo-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #ddd;
-  overflow: hidden;
-  background: #f9f9f9;
-  border-radius: 5px;
-}
-
-.photo {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
-  border-radius: 5px;
+.footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
 }
