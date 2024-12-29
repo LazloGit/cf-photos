@@ -5,7 +5,7 @@ const authToken = "key7SBVpw5HtvATSm"; // Replace with your actual authorization
 function GalleryPage() {
   const [photos, setPhotos] = useState<string[]>([]);
   const [imageUrls, setImageUrls] = useState<{ [key: string]: string }>({});
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   // Fetch the list of photos
   useEffect(() => {
@@ -36,30 +36,43 @@ function GalleryPage() {
     });
   }, [photos]);
 
-  const handleImageClick = (photo: string) => {
-    setSelectedImage(imageUrls[photo] || null);
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
   };
 
   const closeModal = () => {
-    setSelectedImage(null);
+    setSelectedImageIndex(null);
+  };
+
+  const showPreviousImage = () => {
+    if (selectedImageIndex !== null && selectedImageIndex > 0) {
+      setSelectedImageIndex(selectedImageIndex - 1);
+    }
+  };
+
+  const showNextImage = () => {
+    if (selectedImageIndex !== null && selectedImageIndex < photos.length - 1) {
+      setSelectedImageIndex(selectedImageIndex + 1);
+    }
   };
 
   return (
     <div>
       <h1>Photo Gallery</h1>
+      <p>Total Images: {photos.length}</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "10px" }}>
-        {photos.map((photo) => (
+        {photos.map((photo, index) => (
           <img
             key={photo}
             src={imageUrls[photo]}
             alt={photo}
             style={{ width: "100%", cursor: "pointer" }}
-            onClick={() => handleImageClick(photo)}
+            onClick={() => handleImageClick(index)}
           />
         ))}
       </div>
 
-      {selectedImage && (
+      {selectedImageIndex !== null && (
         <div
           style={{
             position: "fixed",
@@ -74,12 +87,50 @@ function GalleryPage() {
           }}
           onClick={closeModal}
         >
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              showPreviousImage();
+            }}
+            style={{
+              position: "absolute",
+              left: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              background: "none",
+              border: "none",
+              color: "white",
+              fontSize: "2rem",
+              cursor: "pointer",
+            }}
+          >
+            &#8249; {/* Left arrow */}
+          </button>
           <img
-            src={selectedImage}
+            src={imageUrls[photos[selectedImageIndex]]}
             alt="Expanded View"
             style={{ maxWidth: "90%", maxHeight: "90%" }}
             onClick={(e) => e.stopPropagation()}
           />
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              showNextImage();
+            }}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              background: "none",
+              border: "none",
+              color: "white",
+              fontSize: "2rem",
+              cursor: "pointer",
+            }}
+          >
+            &#8250; {/* Right arrow */}
+          </button>
         </div>
       )}
     </div>
