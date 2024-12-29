@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import "./App.css"; // For custom CSS styling
 
 const authToken = "key7SBVpw5HtvATSm"; // Replace with your actual authorization token
 
@@ -12,7 +13,7 @@ function App() {
   useEffect(() => {
     fetch("https://cf-photos-worker.paragio.workers.dev/photos", {
       headers: {
-        "Authorization": `Bearer ${authToken}`,
+        Authorization: `Bearer ${authToken}`,
       },
     })
       .then((response) => response.json())
@@ -29,7 +30,7 @@ function App() {
     photos.forEach((photo) => {
       fetch(`https://cf-photos-worker.paragio.workers.dev/photos/${photo}`, {
         headers: {
-          "Authorization": `Bearer ${authToken}`,
+          Authorization: `Bearer ${authToken}`,
         },
       })
         .then((response) => response.blob())
@@ -60,33 +61,36 @@ function App() {
   };
 
   // Handle file upload
-const handleUpload = async () => {
+  const handleUpload = async () => {
     if (!selectedFile) {
       setUploadStatus("No file selected.");
       return;
     }
-  
+
     const formData = new FormData();
     formData.append("file", selectedFile);
-  
+
     try {
-      const response = await fetch("https://cf-photos-worker.paragio.workers.dev/upload", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${authToken}`,
-        },
-        body: formData,
-      });
-  
+      const response = await fetch(
+        "https://cf-photos-worker.paragio.workers.dev/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: formData,
+        }
+      );
+
       if (!response.ok) {
         const errorText = await response.text();
         setUploadStatus(`Upload failed: ${response.status} - ${errorText}`);
         return;
       }
-  
+
       const { key } = await response.json(); // Get the uploaded file's key
       setUploadStatus("Upload successful!");
-  
+
       // Add the new photo key to the state
       setPhotos((prevPhotos) => [...prevPhotos, key]);
     } catch (error) {
@@ -94,7 +98,6 @@ const handleUpload = async () => {
       setUploadStatus("Error during upload.");
     }
   };
-  
 
   return (
     <div className="App">
@@ -109,7 +112,7 @@ const handleUpload = async () => {
       </div>
 
       {/* Gallery Section */}
-      <div>
+      <div className="gallery-grid">
         {photos.length === 0 ? (
           <p>No photos available.</p>
         ) : (
@@ -118,9 +121,8 @@ const handleUpload = async () => {
               <img
                 src={imageUrls[photo]} // Use Blob URL
                 alt={photo}
-                style={{ width: '200px', height: '200px' }}
+                className="photo"
               />
-              <p>{photo}</p>
             </div>
           ))
         )}
