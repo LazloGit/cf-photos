@@ -2,8 +2,16 @@ import { useState, useEffect } from "react";
 
 const authToken = "key7SBVpw5HtvATSm"; // Replace with your actual authorization token
 
+interface Photo {
+  id: string;
+  key: string;
+  user_id: string;
+  album_id: string | null;
+  created_at: string;
+}
+
 function GalleryPage() {
-  const [photos, setPhotos] = useState<string[]>([]);
+  const [photos, setPhotos] = useState<Photo[]>([]);
   const [imageUrls, setImageUrls] = useState<{ [key: string]: string }>({});
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
@@ -15,14 +23,14 @@ function GalleryPage() {
       },
     })
       .then((response) => response.json())
-      .then((data) => setPhotos(data))
+      .then((data: Photo[]) => setPhotos(data))
       .catch((error) => console.error("Error fetching photos:", error));
   }, []);
 
   // Fetch images and create Blob URLs
   useEffect(() => {
     photos.forEach((photo) => {
-      fetch(`https://cf-photos-worker.paragio.workers.dev/photos/${photo}`, {
+      fetch(`https://cf-photos-worker.paragio.workers.dev/photos/${photo.key}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -30,7 +38,7 @@ function GalleryPage() {
         .then((response) => response.blob())
         .then((blob) => {
           const imageUrl = URL.createObjectURL(blob);
-          setImageUrls((prevUrls) => ({ ...prevUrls, [photo]: imageUrl }));
+          setImageUrls((prevUrls) => ({ ...prevUrls, [photo.key]: imageUrl }));
         })
         .catch((error) => console.error("Error fetching image:", error));
     });
@@ -62,13 +70,15 @@ function GalleryPage() {
       <p>Total Images: {photos.length}</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "10px" }}>
         {photos.map((photo, index) => (
-          <img
-            key={photo}
-            src={imageUrls[photo]}
-            alt={photo}
-            style={{ width: "100%", cursor: "pointer" }}
-            onClick={() => handleImageClick(index)}
-          />
+          <div key={photo.id} style={{ position: "relative" }}>
+            <img
+              src={imageUrls[photo.key]}
+              alt={photo.key}
+              style={{ width: "100%", cursor: "pointer" }}
+              onClick={() => handleImageClick(index)}
+            />
+            <p style={{ fontSize: "0.8rem", textAlign: "center" }}>{new Date(photo.created_at).toLocaleString()}</p>
+          </div>
         ))}
       </div>
 
@@ -107,7 +117,7 @@ function GalleryPage() {
             &#8249; {/* Left arrow */}
           </button>
           <img
-            src={imageUrls[photos[selectedImageIndex]]}
+            src={imageUrls[photos[selectedImageIndex].key]}
             alt="Expanded View"
             style={{ maxWidth: "90%", maxHeight: "90%" }}
             onClick={(e) => e.stopPropagation()}
