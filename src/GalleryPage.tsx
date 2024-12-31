@@ -7,6 +7,7 @@ interface Photo {
   key: string;
   user_id: string;
   album_id: string | null;
+  album_name: string | null;  // Add this field for album name
   created_at: string;
 }
 
@@ -77,7 +78,13 @@ function GalleryPage() {
               style={{ width: "100%", cursor: "pointer" }}
               onClick={() => handleImageClick(index)}
             />
-            <p style={{ fontSize: "0.8rem", textAlign: "center" }}>{new Date(photo.created_at).toLocaleString()}</p>
+            {/* Display album name and created date */}
+            <p style={{ fontSize: "0.8rem", textAlign: "center" }}>
+              {photo.album_name ? `Album: ${photo.album_name}` : "No Album"}
+            </p>
+            <p style={{ fontSize: "0.8rem", textAlign: "center" }}>
+              {new Date(photo.created_at).toLocaleString()}
+            </p>
           </div>
         ))}
       </div>
