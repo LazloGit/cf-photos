@@ -1,8 +1,16 @@
-body {
-  font-family: Arial, sans-serif;
+/* General Reset */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box; /* Include padding and border in element's width/height */
+}
+
+body {
+  font-family: Arial, sans-serif;
   background-color: #f4f4f9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .App {
@@ -11,12 +19,15 @@ body {
   min-height: 100vh;
 }
 
+/* Header */
 .top-menu {
   background-color: #333;
   color: white;
   padding: 10px 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  width: 100%;
+  position: relative;
 }
 
 .top-menu a {
@@ -29,14 +40,29 @@ body {
   text-decoration: underline;
 }
 
+/* Main Content */
 .main-content {
   flex: 1;
+  width: 100%; /* Full width */
+  display: flex; /* Flexbox for consistent alignment */
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+/* Page Wrapper */
+.page-content {
+  flex: 1;
+  width: 100%;
   padding: 20px;
 }
 
+/* Footer */
 .footer {
   background-color: #333;
   color: white;
   text-align: center;
   padding: 10px 0;
+  width: 100%;
+  position: relative;
 }

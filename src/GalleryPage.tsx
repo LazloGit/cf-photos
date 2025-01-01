@@ -66,7 +66,7 @@ function GalleryPage() {
   };
 
   return (
-    <div>
+    <div className="page-content">
       <h1>Photo Gallery</h1>
       <p>Total Images: {photos.length}</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "10px" }}>

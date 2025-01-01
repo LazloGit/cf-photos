@@ -84,7 +84,7 @@ function UploadPage() {
   };
 
   return (
-    <div className="upload-page">
+    <div className="page-content">
       <h1>Upload a Photo</h1>
       <div>
         <label htmlFor="user-select">Select User:</label>
@@ -122,6 +122,7 @@ function UploadPage() {
         {uploadStatus && <p>{uploadStatus}</p>}
       </div>
     </div>
+
   );
 }
 

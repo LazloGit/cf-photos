@@ -46,7 +46,7 @@ function AlbumsPage() {
   };
 
   return (
-    <div>
+    <div className="page-content">
       <h1>Manage Albums</h1>
       <input
         type="text"
@@ -63,6 +63,7 @@ function AlbumsPage() {
         ))}
       </ul>
     </div>
+
   );
 }
 
