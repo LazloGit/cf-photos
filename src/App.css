@@ -66,3 +66,87 @@ body {
   width: 100%;
   position: relative;
 }
+
+/* General styles for the page */
+.page-content {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Input styles */
+input[type="text"] {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 10px;
+  outline: none;
+}
+
+input[type="text"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Add button styles */
+button.add-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+button.add-btn:hover {
+  background-color: #0056b3;
+}
+
+button.add-btn:disabled {
+  background-color: #b0d4f1;
+  cursor: not-allowed;
+}
+
+/* List of albums */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+/* Delete button styles */
+button.delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+}
+
+button.delete-btn:hover {
+  background-color: #b02a37;
+}
+
+.add-album-form select {
+  margin: 0 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+}

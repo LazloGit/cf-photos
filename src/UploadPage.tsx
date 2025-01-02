@@ -90,6 +90,7 @@ function UploadPage() {
         <label htmlFor="user-select">Select User:</label>
         <select
           id="user-select"
+          className="add-album-form"
           value={selectedUser}
           onChange={(e) => setSelectedUser(e.target.value)}
         >
@@ -105,6 +106,7 @@ function UploadPage() {
         <label htmlFor="album-select">Select Album:</label>
         <select
           id="album-select"
+          className="add-album-form"
           value={selectedAlbum}
           onChange={(e) => setSelectedAlbum(e.target.value)}
         >
@@ -118,7 +120,7 @@ function UploadPage() {
       </div>
       <div>
         <input type="file" onChange={handleFileChange} />
-        <button onClick={handleUpload}>Upload</button>
+        <button className="add-btn" onClick={handleUpload}>Upload</button>
         {uploadStatus && <p>{uploadStatus}</p>}
       </div>
     </div>
